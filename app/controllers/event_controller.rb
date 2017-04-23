@@ -9,17 +9,6 @@ class EventController < ApplicationController
     @events_in_state = Event.where(state: current_user.state)
     @events_out_of_state = Event.where.not(state: current_user.state).order(:event_date).take(10)
     @event = Event.new
-    # puts '==================='
-    # @ee = Event.find(3)
-    # puts @ee.guests
-    # puts current_user
-    # @ee.guests.each do |g|
-    #   puts g.name
-    # end
-    # puts '==================='
-    # puts GuestList.where(user_id: 1, event_id: 3 ).count
-    # puts GuestList.where(user_id: 1, event_id: 4 ).count
-    # puts '==================='
   end
 
   def create
@@ -29,6 +18,10 @@ class EventController < ApplicationController
       @event.save
       redirect_to event_index_path
     else
+      @states = State.all
+      @events_all = Event.all
+      @events_in_state = Event.where(state: current_user.state)
+      @events_out_of_state = Event.where.not(state: current_user.state).order(:event_date).take(10)
       flash[:errors] = @event.errors.full_messages
       event = @event
       render "index"

@@ -2,6 +2,9 @@ class SessionController < ApplicationController
   skip_before_action :logged_in, only: [:index, :create]
   def index
     # loads the login page
+    if current_user
+      redirect_to event_index_path
+    end
   end
 
   def create
