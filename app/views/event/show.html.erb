@@ -1,0 +1,86 @@
+<div class='row'>
+  <p><label class='col-md-2'>Name:</label><%= @event.name %></p>
+  <p><label class='col-md-2'>Date:</label><%= @event.event_date %></p>
+  <p><label class='col-md-2'>Location, State:</label><%= @event.location %>, <%= @event.state %></p>
+  <sub>EventController#show</sub>
+  <sub>Find me in app/views/event_controller/show.html.erb</sub>
+</div
+<% content_for :left do %>
+<div class='border'>
+  <% if current_user == @event.host %>
+    <form action='<%= event_update_path(@event.id) %>' method='post'>
+      <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+      <div class='form-group'>
+        <div class='row'>
+          <label class='col-md-2'>Name:</label><input class='col-md-9' type='text' name='event[name]' value="<%= @event.name %>">
+          <label class='col-md-2'>Date:</label><input class='col-md-4' type='date' name='event[event_date]' value="<%= @event.event_date %>">
+        </div>
+        <div class='row'>
+          <label class='col-md-2'>Location:</label><input class='col-md-4' type='text' name='event[location]' value="<%= @event.location %>">
+          <label class='col-md-2'>State:</label>
+          <select class='col-md-2' name='event[state]'>
+            <% @states.each do |s| %>
+            <option value="<%= s.abbr %>" <% if @event.state != "" && s.abbr == @event.state %>
+              selected
+              <% end %>
+            >
+               <%= s.abbr %>
+            </option>
+            <% end %>
+          </select>
+          <span class='col-md-2'><%= State.find_by_abbr(@event.state).name %></span>
+        </div>
+      </div>
+      <button class='btn btn-primary col-md-offset-10' type='submit'>Change</button>
+    </form>
+  <% else %>
+    <p><label class='col-md-3'>Name:</label><%= @event.name %></p>
+    <p><label class='col-md-3'>Date:</label><%= @event.event_date %></p>
+    <p><label class='col-md-3'>Location, State:</label><%= @event.location %>, <%= @event.state %></p>
+  <% end %>
+</div>
+  <br />
+  <div class='border'>
+    <p><b>Attendees:</b></p>
+    <table class='table'>
+      <thead>
+        <tr>
+          <th>Guest</th>
+          <th>Actions?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @event.guests.each do |guest| %>
+        <tr><td><%= guest.name %></td></tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <sub>EventController#show</sub>
+  <sub>Find me in app/views/event_controller/show.html.erb</sub>
+<% end %>
+<% content_for :right do %>
+<div class='border'>
+  <form method='POST' action="<%= @event.id %>/comment">
+    <div class='form-group row'>
+      <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+      <input class='col-md-offset-1 col-md-6' type='text' name='comment[text]'/>
+      <button class='col-md-offset-1 col-md-2 btn btn-primary' type='submit'>Comment</button>
+    </div>
+  </form>
+  <% @event_comments.each do |msg| %>
+  <div class='row'>
+    <p class='col-md-10'><b><%= msg.user.name %> -- </b><%= msg.text %></p>
+    <% if current_user == msg.user %>
+    <div class='col-md-1'>
+      <form action='/comment/<%= msg.id %>' method='POST'>
+        <input type='hidden' name='authenticity_token' value='form_authenticity_token' />
+        <input type='hidden' name="_method" value='DELETE' />
+        <button class='btn-xs btn-danger' type='submit'>X</button>
+      </form>
+    </div>
+    <% end %>
+  </div>
+  <% end %>
+</div>
+<% end %>

@@ -1,0 +1,11 @@
+<form action='login' method='post'>
+  <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+  <label for='login'>e-Mail:</label>
+  <input name='login' />
+  <label for='password'>Password:</label>
+  <input name='password' type='password'/>
+  <button type ="submit">Login</button>
+</form>
+<%= link_to "register", user_new_path %>
+<sub>Session#index</sub>
+<sub>Find me in app/views/session/index.html.erb</sub>

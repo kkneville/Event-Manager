@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>EventManager</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class='container'>
+      <p class='row'>
+          <span id='dashboard' class='col-md-1'><%= link_to "dashboard", event_index_path, :class =>'btn' %></span>
+          <span class='col-md-9'></span>
+          <span id='profile' class='col-md-1'><% if current_user %><%= link_to "profile", user_show_path(current_user.id), :class =>'btn' %><% end %></span>
+          <span id='logout' class='col-md-1'><% if current_user %><%= link_to "logout", session_destroy_path, :class =>'btn' %><% end %></span>
+      </p>
+      <div id='notice'>
+        <% if flash[:notice] != nil %>
+        <p><%= flash[:notice] %></p>
+        <% end %>
+      </div>
+      <div id='errors' style='color: red;'>
+        <% if flash[:errors] %>
+        <ul>
+          <% flash[:errors].each do |e| %>
+            <li><%= e %></li>
+          <% end %>
+        </ul>
+        <% end %>
+      </div>
+      <%= yield %>
+    </div>
+  </body>
+</html>

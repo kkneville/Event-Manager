@@ -1,0 +1,38 @@
+<div class='row'>
+  <p><label class='col-md-2'>Name:</label><%= @user.name %></p>
+  <p><label class='col-md-2'>e-Mail:</label><%= @user.email %></p>
+  <p><label class='col-md-2'>Location:</label><%= @user.location %>, <span class='col-md-2'>State:</span><%= @user.state %></p>
+  <sub>User#show</sub>
+  <sub>Find me in app/views/user/show.html.erb</sub>
+</div
+<% content_for :left do %>
+  <p><label class='col-md-2'>Name:</label><%= @user.name %></p>
+  <p><label class='col-md-2'>e-Mail:</label><%= @user.email %></p>
+  <p><label class='col-md-2'>Location, State</label><%= @user.location %>, <%= @user.state %></p>
+  <sub>User#show</sub>
+  <sub>Find me in app/views/user/show.html.erb</sub>
+<% end %>
+
+<% content_for :right do %>
+  <form action='<%= user_update_path(@user.id) %>' method='post'>
+    <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+    <div class='form-group'>
+      <label class='col-md-3'>First Name:</label><input class='col-md-9' type='text' name='user[first_name]' value="<%= @user.first_name %>">
+      <label class='col-md-3'>Last Name:</label><input class='col-md-9' type='text' name='user[last_name]' value="<%= @user.last_name %>">
+      <label class='col-md-3'>e-Mail:</label><input class='col-md-9' type='text' name='user[email]' value="<%= @user.email %>">
+      <label class='col-md-3'>Location:</label><input class='col-md-4' type='text' name='user[location]' value="<%= @user.location %>">
+      <label class='col-md-2'>State:</label>
+      <select class='col-md-2' name='user[state]'>
+        <% @states.each do |s| %>
+        <option value="<%= s.abbr %>" <% if @user.state != "" && s.abbr == @user.state %>
+          selected
+          <% end %>
+        >
+           <%= s.abbr %>, <%= s.name%>, <%= s.country%>
+        </option>
+        <% end %>
+      </select>
+    </div>
+    <button class='btn btn-primary col-md-offset-10' type='submit'>Change</button>
+  </form>
+<% end %>
