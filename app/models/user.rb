@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
   has_many :event
+  has_many :guest_lists
   has_many :events, through: :guest_lists
   has_many :comments
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]+)\z/i

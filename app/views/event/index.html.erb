@@ -17,6 +17,11 @@
       <td class='col-md-3'>
         <% if e.host == current_user %>
         <%= link_to "Edit", event_show_path(:id => e.id), :class=>'btn-xs btn-primary' %>
+        <form style='display: inline;' method='POST'>
+          <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>' />
+          <input type='hidden' value='DELETE' name='_method' />
+          <button formaction='<%= event_destroy_path(:id => e.id) %>' type='submit' class='btn-xs btn-danger'>Delete</button>
+        </form>
         <% end %>
         <form style='display: inline;' method='POST'>
           <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>' />
@@ -48,9 +53,14 @@
           <td class='col-md-2'><%= e.host.name %></td>
           <td class='col-md-3'>
             <% if e.host == current_user %>
-            <%= link_to "Edit", event_show_path(:id => e.id) %>
+            <%= link_to "Edit", event_show_path(:id => e.id), :class=>'btn-xs btn-primary' %>
+            <form style='display: inline;' method='POST'>
+              <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>' />
+              <input type='hidden' value='DELETE' name='_method' />
+              <button formaction='<%= event_destroy_path(:id => e.id) %>' type='submit' class='btn-xs btn-danger'>Delete</button>
+            </form>
             <% end %>
-            <form method='POST'>
+            <form style='display: inline;' method='POST'>
               <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>' />
               <% gl=GuestList.where(user_id: current_user.id, event_id: e.id ) %>
               <% if gl.count > 0 %>
