@@ -8,7 +8,9 @@ class SessionController < ApplicationController
   end
 
   def create
-    @user = User.find_by_email(params[:login].downcase!).try(:authenticate, params[:password])
+    email = params[:login]
+    email.downcase!
+    @user = User.find_by_email(email).try(:authenticate, params[:password])
     if @user
       session[:user_id] = @user.id
       session[:name] = @user.name
