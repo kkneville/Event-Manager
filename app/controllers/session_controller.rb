@@ -12,12 +12,11 @@ class SessionController < ApplicationController
     if @user
       session[:user_id] = @user.id
       session[:name] = @user.name
-      # redirect_to user_show_path(:id => @user.id), notice: "#{@user.name} successfully logged in."
+      session[:event] = nil
       redirect_to event_index_path, notice: "#{@user.name} successfully logged in."
     else
       flash[:errors] = ['login/password not valid']
-      render root_path
-      flash[:errors] = []
+      redirect_to root_path
     end
   end
 
@@ -26,6 +25,7 @@ class SessionController < ApplicationController
       flash[:notice] = "#{session[:name]} successfully logged out."
       session[:user_id] = nil
       session[:name] = nil
+      session[:event] = nil
       redirect_to root_path
     end
   end

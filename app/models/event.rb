@@ -6,7 +6,7 @@ class Event < ApplicationRecord
   validates :name, :location, :state, :event_date, presence: true
   validate :future_dates_only
   def future_dates_only
-    if self.event_date <= Date.today
+    if self.event_date == nil || self.event_date <= Date.today
       errors.add(:event_date, "The event date must be in the future")
     end
   end

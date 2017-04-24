@@ -4,29 +4,25 @@ class EventController < ApplicationController
   end
 
   def index
+    # needed context for event/index page
     @states = State.all
     @events_all = Event.all
     @events_in_state = Event.where(state: current_user.state).order(:event_date)
     @events_out_of_state = Event.where.not(state: current_user.state).order(:event_date).take(6)
-    @event = Event.new
+    # possible context for the add event form at bottom
+    @event = Event.new()
+    @event = Event.new(session[:event]) if flash[:errors] != nil
   end
 
   def create
     @event = Event.new( event_params )
     @event.host = current_user
-    if @event.valid?
-      @event.save
-      redirect_to event_index_path
-    else
-      @states = State.all
-      @events_all = Event.all
-      @events_in_state = Event.where(state: current_user.state)
-      @events_out_of_state = Event.where.not(state: current_user.state).order(:event_date).take(6)
+
+    if @event.save == false
       flash[:errors] = @event.errors.full_messages
-      event = @event
-      render "index"
-      flash[:errors]=[]
+      session[:event] = @event
     end
+    redirect_to event_index_path
   end
 
   def destroy
@@ -41,10 +37,9 @@ class EventController < ApplicationController
     if @event.save
       redirect_to event_index_path
     else
-      @states = State.all
       flash[:errors] = @event.errors.full_messages
-      render "show", layout: "two_cols"
-      flash[:errors]=[]
+      session[:event] = @event
+      redirect_to event_show_path(params[:id])
     end
   end
 
@@ -52,6 +47,7 @@ class EventController < ApplicationController
     @event = Event.find(params[:id])
     @states = State.all
     @event_comments = @event.comments.order(created_at: :desc )
+    @event = Event.new(session[:event]) if flash[:errors] != nil && session[:event] != nil
     render layout: "two_cols"
   end
 
