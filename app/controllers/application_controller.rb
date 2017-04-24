@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   def logged_in
     unless current_user
-      redirect_to session_index_path
+      redirect_to root_path
     end
   end
 

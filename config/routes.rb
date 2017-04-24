@@ -26,7 +26,6 @@ Rails.application.routes.draw do
 # Sessions ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
   get 'session/index'
   get '/login' => 'session#index'
-  post 'session/login' => 'session#index'
   post 'session/create'
   post 'session/login' => 'session#create'
   post '/login' => 'session#create'
