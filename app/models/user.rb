@@ -6,7 +6,7 @@ class User < ApplicationRecord
   has_many :comments
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]+)\z/i
 
-  validates :email, :first_name, :state, :location, presence: true
+  validates :email, :first_name, :last_name, :state, :location, presence: true
   validates :email, format: { with: EMAIL_REGEX }
   validates :email, uniqueness: true
   validates :password, length: {in: 8..32}, unless: :skip_pw

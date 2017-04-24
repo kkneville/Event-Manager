@@ -12,25 +12,31 @@ class UserController < ApplicationController
     if (@user.password == @user.password_confirmation)
       # user.password_confirmation = nil
       if @user.save
+        session[:user] = nil
         redirect_to '/'
       else
         flash[:errors] = @user.errors.full_messages
-        user = @user
-        render "new"
-        flash[:errors]=[]
+        session[:user] = @user
+        # user = @user
+        # render "new"
+        # flash[:errors]=[]
+        redirect_to user_new_path
       end
     else
       flash[:errors] = @user.errors.full_messages
       flash[:errors].append("Passwords and Confirm Password don't match")
-      user = @user
-      render "new"
-      flash[:errors]=[]
+      session[:user] = @user
+      # user = @user
+      # render "new"
+      # flash[:errors]=[]
+      redirect_to user_new_path
     end
   end
 
   def show
     @states = State.all
     @user = User.find(params[:id])
+    @user = User.new(session[:user]) if flash[:errors] != nil && session[:user] != nil
     render layout: 'two_cols'
   end
 
@@ -40,6 +46,8 @@ class UserController < ApplicationController
   def new
     @states = State.all
     @user = User.new
+    @user = User.new(session[:user]) if flash[:errors] != nil && session[:user] != nil
+
   end
 
   def update
@@ -50,8 +58,10 @@ class UserController < ApplicationController
     else
       @states = State.all
       flash[:errors] = @user.errors.full_messages
-      render "show", layout: "two_cols"
-      flash[:errors]=[]
+      session[:user] = @user
+      redirect_to user_show_path(params[:id])
+      # render "show", layout: "two_cols"
+      # flash[:errors]=[]
     end
   end
   private
