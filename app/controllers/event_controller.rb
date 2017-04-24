@@ -27,7 +27,7 @@ class EventController < ApplicationController
 
   def destroy
     @event = Event.find(params[:id])
-    @event.delete if current_user == @event.host
+    @event.destroy if current_user == @event.host
     redirect_to event_index_path
   end
 
