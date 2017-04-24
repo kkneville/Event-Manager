@@ -1,0 +1,109 @@
+<div class='container'>
+  <div class="events_in_state">
+  <table class='table'>
+    <tr>
+      <th>Event Title</th>
+      <th>Date</th>
+      <th>Location</th>
+      <th>Host</th>
+      <th>Actions</th>
+    </tr>
+    <% @events_in_state.each do |e| %>
+    <tr>
+      <td class='col-md-3'><%= link_to e.name, event_show_path( e.id ) %></td>
+      <td class='col-md-1'><%= e.event_date %></td>
+      <td class='col-md-3'><%= e.city_state %></td>
+      <td class='col-md-2'><%= e.host.name %></td>
+      <td class='col-md-3'>
+        <% if e.host == current_user %>
+        <%= link_to "Edit", event_show_path(:id => e.id), :class=>'btn-xs btn-primary' %>
+        <form style='display: inline;' method='POST'>
+          <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>' />
+          <input type='hidden' value='DELETE' name='_method' />
+          <button formaction='<%= event_destroy_path(:id => e.id) %>' type='submit' class='btn-xs btn-danger'>Delete</button>
+        </form>
+        <% end %>
+        <form style='display: inline;' method='POST'>
+          <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>' />
+          <% gl=GuestList.where(user_id: current_user.id, event_id: e.id ) %>
+          <% if gl.count > 0 %>
+          <input type='hidden' value='DELETE' name='_method' />
+          <button formaction='<%= guest_list_destroy_path(:id => gl.first.id) %>' type='submit' class='btn-xs btn-danger'>Cancel</button>
+          <% else %>
+          <button formaction="<%= guest_list_create_path(:event_id => e.id) %>" type='submit' class='btn-xs btn-success'>RSVP</button>
+          <% end %>
+        </form>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+  </div>
+  <div class="events_out_of_state">
+    <table class='table'>
+      <thead>
+        <tr><th>Event Title</th><th>Date</th><th>Location</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @events_out_of_state.each do |e| %>
+        <tr>
+          <td class='col-md-3'><%= link_to e.name, event_show_path( :id => e.id ) %></td>
+          <td class='col-md-1'><%= e.event_date %></td>
+          <td class='col-md-3'><%= e.city_state %></td>
+          <td class='col-md-2'><%= e.host.name %></td>
+          <td class='col-md-3'>
+            <% if e.host == current_user %>
+            <%= link_to "Edit", event_show_path(:id => e.id), :class=>'btn-xs btn-primary' %>
+            <form style='display: inline;' method='POST'>
+              <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>' />
+              <input type='hidden' value='DELETE' name='_method' />
+              <button formaction='<%= event_destroy_path(:id => e.id) %>' type='submit' class='btn-xs btn-danger'>Delete</button>
+            </form>
+            <% end %>
+            <form style='display: inline;' method='POST'>
+              <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>' />
+              <% gl=GuestList.where(user_id: current_user.id, event_id: e.id ) %>
+              <% if gl.count > 0 %>
+              <input type='hidden' value='DELETE' name='_method' />
+              <button formaction='<%= guest_list_destroy_path(:id => gl.first.id) %>' type='submit' class='btn-xs btn-danger'>Cancel</button>
+              <% else %>
+              <button formaction="<%= guest_list_create_path(:event_id => e.id) %>" type='submit' class='btn-xs btn-success'>RSVP</button>
+              <% end %>
+            </form>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class='add_event'>
+    <form action='<%= event_create_path %>' method='post'>
+      <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+      <div class='form-group row'>
+        <p>New Event:</p>
+        <label class='col-md-1' for='event[name]'>Title</label><input class='col-md-2' name='event[name]' type='text' value='<%= @event.name %>'/>
+        <label class='col-md-1' for='event[date]'>Date</label><input class='col-md-2' name='event[event_date]' type='date' value='<%= @event.event_date %>'/>
+        <label class='col-md-1' for='event[name]'>Location</label><input class='col-md-2' name='event[location]' type='text' value='<%= @event.location %>'/>
+        <label class='col-md-1' for='event[state]'>State</label>
+        <select name='event[state]'>
+          <% @states.each do |s| %>
+          <option class='col-md-1' value="<%= s.abbr %>"
+             <% if @event.state != "" && s.abbr == @event.state %>
+            selected
+            <% end %>
+          ><%= s.abbr %>
+          </option>
+          <% end %>
+        </select>
+      </div>
+      <div class='row'>
+        <span class='col-md-11'></span>
+        <button class='btn btn-primary col-md-1' type='submit'>Add Event</button>
+      </div>
+    </form>
+  </div>
+  <div>
+    <sub>EventController#index</sub>
+    <sub>Find me in app/views/event_controller/index.html.erb</sub>
+  </div>
+</div>

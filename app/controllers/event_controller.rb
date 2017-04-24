@@ -6,8 +6,8 @@ class EventController < ApplicationController
   def index
     @states = State.all
     @events_all = Event.all
-    @events_in_state = Event.where(state: current_user.state)
-    @events_out_of_state = Event.where.not(state: current_user.state).order(:event_date).take(10)
+    @events_in_state = Event.where(state: current_user.state).order(:event_date)
+    @events_out_of_state = Event.where.not(state: current_user.state).order(:event_date).take(6)
     @event = Event.new
   end
 
@@ -21,7 +21,7 @@ class EventController < ApplicationController
       @states = State.all
       @events_all = Event.all
       @events_in_state = Event.where(state: current_user.state)
-      @events_out_of_state = Event.where.not(state: current_user.state).order(:event_date).take(10)
+      @events_out_of_state = Event.where.not(state: current_user.state).order(:event_date).take(6)
       flash[:errors] = @event.errors.full_messages
       event = @event
       render "index"
