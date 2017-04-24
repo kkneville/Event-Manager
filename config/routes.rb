@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   post 'user/register' => 'user#create'
   get 'user/new'
   get 'user/register' => 'user#new'
+  get 'user/password/:id' => 'user#password', as: "user_password"
   get 'user/:id' => 'user#show', as: 'user_show'
   post 'user/:id' => 'user#update', as: 'user_update'
   delete 'user/:id' => 'user#destroy', as: 'user_destroy'

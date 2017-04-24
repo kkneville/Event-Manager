@@ -7,8 +7,8 @@ class EventController < ApplicationController
     # needed context for event/index page
     @states = State.all
     @events_all = Event.all
-    @events_in_state = Event.where(state: current_user.state).order(:event_date)
-    @events_out_of_state = Event.where.not(state: current_user.state).order(:event_date).take(6)
+    @events_in_state = Event.where('state = ? AND event_date >= ?', current_user.state, Date.today).order(:event_date)
+    @events_out_of_state = Event.where('state != ? AND event_date >= ?', current_user.state, Date.today).order(:event_date).take(6)
     # possible context for the add event form at bottom
     @event = Event.new()
     @event = Event.new(session[:event]) if flash[:errors] != nil && session[:event] != nil

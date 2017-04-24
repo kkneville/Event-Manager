@@ -6,29 +6,19 @@ class UserController < ApplicationController
   end
 
   def create
-    @states = State.all
+    # @states = State.all
     @user = User.new( user_params )
     @user.valid?
-    if (@user.password == @user.password_confirmation)
-      # user.password_confirmation = nil
-      if @user.save
-        session[:user] = nil
-        redirect_to '/'
-      else
-        flash[:errors] = @user.errors.full_messages
-        session[:user] = @user
-        # user = @user
-        # render "new"
-        # flash[:errors]=[]
-        redirect_to user_new_path
-      end
+    if @user.valid? && (@user.password == @user.password_confirmation)
+      @user.save
+      session[:user] = nil
+      redirect_to root_path
     else
       flash[:errors] = @user.errors.full_messages
-      flash[:errors].append("Passwords and Confirm Password don't match")
       session[:user] = @user
-      # user = @user
-      # render "new"
-      # flash[:errors]=[]
+      if (@user.password != @user.password_confirmation)
+        flash[:errors].append("Password and Confirm Password don't match")
+      end
       redirect_to user_new_path
     end
   end
@@ -47,7 +37,6 @@ class UserController < ApplicationController
     @states = State.all
     @user = User.new
     @user = User.new(session[:user]) if flash[:errors] != nil && session[:user] != nil
-
   end
 
   def update
@@ -56,12 +45,10 @@ class UserController < ApplicationController
     if @user.save( context: :skip_pw )
       redirect_to event_index_path
     else
-      @states = State.all
+      # @states = State.all
       flash[:errors] = @user.errors.full_messages
       session[:user] = @user
       redirect_to user_show_path(params[:id])
-      # render "show", layout: "two_cols"
-      # flash[:errors]=[]
     end
   end
   private

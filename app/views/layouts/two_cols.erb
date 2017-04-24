@@ -14,11 +14,10 @@
   <div class='container'>
     <p class='row'>
         <span id='dashboard' class='col-md-1'><%= link_to "dashboard", event_index_path, :class =>'btn' %></span>
-        <span class='col-md-9'></span>
+        <span class='col-md-9'><% if current_user %>Logged In: <%= current_user.name %><% end %></span>
         <span id='profile' class='col-md-1'><% if current_user %><%= link_to "profile", user_show_path(current_user.id), :class =>'btn' %><% end %></span>
         <span id='logout' class='col-md-1'><% if current_user %><%= link_to "logout", session_destroy_path, :class =>'btn' %><% end %></span>
-    </p>
-    <div id='notice'>
+    </p>    <div id='notice'>
       <% if flash[:notice] != nil %>
       <p><%= flash[:notice] %></p>
       <% end %>

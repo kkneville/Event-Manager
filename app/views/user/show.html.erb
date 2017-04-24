@@ -4,7 +4,7 @@
   <p><label class='col-md-2'>Location:</label><%= @user.location %>, <span class='col-md-2'>State:</span><%= @user.state %></p>
   <sub>User#show</sub>
   <sub>Find me in app/views/user/show.html.erb</sub>
-</div
+</div>
 <% content_for :left do %>
   <p><label class='col-md-2'>Name:</label><%= @user.name %></p>
   <p><label class='col-md-2'>e-Mail:</label><%= @user.email %></p>
@@ -33,6 +33,11 @@
         <% end %>
       </select>
     </div>
-    <button class='btn btn-primary col-md-offset-10' type='submit'>Change</button>
+    <div class='form-group row'>
+      <button class='btn btn-primary col-md-offset-6' type='submit'>Change</button>
+      <% if current_user == @user %>
+        <%= link_to "Change Password", user_password_path(id: @user.id), :method=>"GET", :class=>'btn btn-primary col-md-3' %>
+      <% end %>
+    </div>
   </form>
 <% end %>

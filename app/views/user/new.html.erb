@@ -1,30 +1,37 @@
 <form action='register' method='post'>
   <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
-  <label for='user[first_name]'>First Name:</label>
-  <input name='user[first_name]' type='text' value="<%= @user.first_name %>">
-  <label for='user[last_name]'>Last Name:</label>
-  <input name='user[last_name]' type='text' value="<%= @user.last_name %>">
-  <label for='user[location]'>Location:</label>
-  <input name='user[location]' type='text' value="<%= @user.location %>">
-  <label for='user[state]'>State</label>
-  <select name='user[state]'>
-    <% @states.each do |s| %>
-    <option value="<%= s.abbr %>" <% if @user.state != "" && s.abbr == @user.state %>
-      selected
+  <div class='form-group row'>
+    <label class='col-md-2' for='user[first_name]'>First Name:</label>
+    <input class='col-md-2' name='user[first_name]' type='text' value="<%= @user.first_name %>">
+    <label class='col-md-2' for='user[last_name]'>Last Name:</label>
+    <input class='col-md-3' name='user[last_name]' type='text' value="<%= @user.last_name %>">
+  </div>
+  <div class='form-group row'>
+    <label class='col-md-2' for='user[location]'>Location:</label>
+    <input class='col-md-3' name='user[location]' type='text' value="<%= @user.location %>">
+    <label class='col-md-1' for='user[state]'>State</label>
+    <select name='user[state]'>
+      <% @states.each do |s| %>
+      <option value="<%= s.abbr %>" <% if @user.state != "" && s.abbr == @user.state %>
+        selected
+        <% end %>
+      >
+         <%= s.abbr %>, <%= s.name%>, <%= s.country %>
+      </option>
       <% end %>
-    >
-       <%= s.abbr %>, <%= s.name%>, <%= s.country%>
-    </option>
-    <% end %>
-  </select>
-  <br />
-  <label for='user[email]'>e-Mail:</label>
-  <input name='user[email]' type='text' value="<%= @user.email %>">
-  <label for='user[password]'>Password:</label>
-  <input name='user[password]' type='password' value="">
-  <label for='user[password_confirmation]'>Confirm Password:</label>
-  <input name='user[password_confirmation]' type='password' value="">
-  <button type ="submit">Register</button>
+    </select>
+  </div>
+  <div class='form-group row'>
+    <label class='col-md-2' for='user[email]'>e-Mail:</label>
+    <input class='col-md-3' name='user[email]' type='text' value="<%= @user.email %>">
+  </div>
+  <div class='form-group row'>
+    <label class='col-md-2' for='user[password]'>Password:</label>
+    <input class='col-md-2' name='user[password]' type='password' value="">
+    <label class='col-md-2' for='user[password_confirmation]'>Confirm Password:</label>
+    <input class='col-md-2' name='user[password_confirmation]' type='password' value="">
+    <button class='btn btn-primary' type ="submit">Register</button>
+  </div>
 
 </form>
 <%= link_to "I am Registered", login_path %>

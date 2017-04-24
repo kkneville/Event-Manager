@@ -11,6 +11,7 @@
       <td class='col-md-2'><%= e.host.name %></td>
       <td class='col-md-3'>
         <% if e.host == current_user %>
+        <!-- <a class='btn-xs btn-primary' href="<%= event_show_path(:id => e.id) %>">Edit</a> -->
         <%= link_to "Edit", event_show_path(:id => e.id), :class=>'btn-xs btn-primary' %>
         <form style='display: inline;' method='POST'>
           <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>' />
@@ -30,6 +31,6 @@
         </form>
       </td>
     </tr>
-    <% end %>    
+    <% end %>
   </tbody>
 </table>
